@@ -1,3 +1,5 @@
+from time import sleep
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -6,25 +8,43 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-from time import sleep
+from . import add_domain_cookies
 
-def bestbuy_login(driver:webdriver.Firefox, credentials:dict, 
-                  url:str='https://www.bestbuy.com',
-                #   url:str="https://www.bestbuy.com/site/oculus-quest-2-advanced-all-in-one-virtual-reality-headset-128gb/6473553.p?skuId=6473553", 
-                  stay_signed_in=True):
+domain = "www.bestbuy.com"
+
+def bestbuy_login(
+    driver:webdriver.Firefox, 
+    credentials:dict, 
+    url:str='https://www.bestbuy.com',
+    #   url:str="https://www.bestbuy.com/site/oculus-quest-2-advanced-all-in-one-virtual-reality-headset-128gb/6473553.p?skuId=6473553", 
+    stay_signed_in=True,
+    cookies=[]
+    ):
     wait = WebDriverWait(driver, 10)
     
     # If URL specified, go to URL
     if url: driver.get(url)
+
+    # Add domain cookies
+    add_domain_cookies(driver, domain, cookies)
     
     # Exit popup from initial visit to website
-    wait.until(EC.visibility_of_element_located((By.CLASS_NAME,"c-close-icon"))).click()
+    try: wait.until(EC.visibility_of_element_located((By.CLASS_NAME,"c-close-icon"))).click()
+    except: pass
     
     # Wait for form to dissapear
     wait.until(EC.invisibility_of_element_located((By.CLASS_NAME,"form-body-copy")))
     sleep(.5)
     wait.until(EC.visibility_of_element_located((By.XPATH, "//button[contains(@class,'account-button')]/../.."))).click()
-    
+    wait.until(EC.visibility_of_element_located((By.XPATH, "//div[contains(@class,'account-header') or contains(@class,'header-guest-user')]")))
+    # sleep(.5)
+
+    # Return if already logged in
+    try: 
+        driver.find_element_by_id("logout-button")
+        return
+    except: pass
+
     # Input email and password then submit.
     wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'sign-in-btn'))).click()
     wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='email']"))).send_keys(credentials['email'])

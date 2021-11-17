@@ -1,7 +1,8 @@
 import os
-from os.path import normpath, dirname, abspath, join
+from os.path import normpath, dirname, abspath, join, isfile
 import json
 from urllib.parse import urlparse
+import pickle
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -11,6 +12,7 @@ from modules.selenium.amazon import amazon_login, amazon_parse_product
 from modules.selenium.bestbuy import bestbuy_login, bestbuy_parse_product
 
 dir_script:str = abspath(join(normpath(dirname(__file__)), '..'))
+dir_cookies:str = join(dir_script,"cache","cookies","_.pkl")
 
 domain_meta = {
     'www.amazon.com': {
@@ -21,9 +23,10 @@ domain_meta = {
     'www.bestbuy.com': {
         'login':        bestbuy_login,
         'scrape':       bestbuy_parse_product,
-        'credentials':  join(dir_script,'credentials','bestbuy.json')
+        'credentials':  join(dir_script,'credentials','bestbuy.json'),
     }
 }
+
 
 def scrape_urls(args, driver = None):
     res = []
@@ -32,7 +35,10 @@ def scrape_urls(args, driver = None):
     
     # Set of domain names already logged into
     domains_logged_into = set()
-    
+
+    # Read cookies from file at location 'dir_cookies'
+    cookies:list = pickle.load(open(dir_cookies, "rb")) if isfile(dir_cookies) else []
+
     # Iterate over each url specified
     for url in args.url:
         domain = urlparse(url).netloc
@@ -47,12 +53,15 @@ def scrape_urls(args, driver = None):
         # Log into domain if conditions are met
         if not (login == None or domain in domains_logged_into or args.skip_login):
             credentials = parse_domain_credentials(domain_meta[domain].get('credentials'))
-            login(driver, credentials)
+            login(driver, credentials, cookies=cookies)
             domains_logged_into.add(domain)
         
         scrape_res = scrape(driver, url)
         res.append(scrape_res)
         
+    # Save cookies to location 'dir_cookies'
+    pickle.dump( driver.get_cookies() , open(dir_cookies,"wb"))
+
     driver.quit()
     
     return res
