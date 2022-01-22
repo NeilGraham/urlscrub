@@ -1,4 +1,5 @@
 import json
+from time import sleep
 
 from selenium import webdriver
 
@@ -99,6 +100,8 @@ class SeleniumWebsite:
         # Add cookies if given
         if len(cookies) > 0:
             add_domain_cookies(self.driver, cookies, domain=self.domain, url=self.domain_mainpage)
+            # Reload current URL after adding cookies
+            self.driver.get(self.driver.current_url)
         
         # If credentials given, login
         if credentials:
