@@ -9,6 +9,7 @@ from selenium import webdriver
 from modules.selenium import join_cookies
 from modules.selenium.amazon import SeleniumAmazon
 from modules.selenium.bestbuy import SeleniumBestBuy
+from modules.selenium.youtube import SeleniumYouTube
 
 dir_script:str = abspath(join(normpath(dirname(__file__)), '..'))
 dir_cookies:str = join(dir_script,"cache","cookies","_.pkl")
@@ -22,6 +23,10 @@ domain_meta = {
         "class":        SeleniumBestBuy,
         "credentials":  join(dir_script,'credentials','bestbuy.json'),
     },
+    "www.youtube.com": {
+        "class":        SeleniumYouTube,
+        "credentials":  join(dir_script,'credentials','youtube.json'),
+    }
 }
 
 def scrape_urls(args, driver = None):
