@@ -1,6 +1,10 @@
-# Credentials
-# credentials/*
+# './database'
+database/*
+!database/README.md
 
+# MacOS
+# _____
+.DS_Store
 
 # Python
 # ______

@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 
-from . import SeleniumWebsite
+from domains.SeleniumWebsite import SeleniumWebsite
 
 class SeleniumAirbnb(SeleniumWebsite):
 

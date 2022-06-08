@@ -8,7 +8,7 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-from . import SeleniumWebsite
+from domains.SeleniumWebsite import SeleniumWebsite
 
 class SeleniumAmazon(SeleniumWebsite):
 

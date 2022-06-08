@@ -1,5 +1,8 @@
-import sys, json
+import sys
+import json
 from argparse import ArgumentParser
+
+# from onepassword import OnePassword
 
 from scrape import scrape_urls
 
@@ -7,18 +10,32 @@ def parse_args(args_list:list[str]):
     parser = ArgumentParser()
 
     parser.add_argument(
-        '--skip_login', action="store_true",
-        help="If specified, skips login on websites specified." )
+        "--url", '-l', required=True, nargs='+',
+        help="URL to parse information from."
+        )
+    
+    parser.add_argument(
+        "--driver", "-d", default="firefox", type=str.lower, choices=['firefox', 'chrome'],
+        help="Selenium WebDriver type to use."
+        )
 
     parser.add_argument(
-        "--url", required=True, nargs='+',
-        help="URL to parse information from." )
+        '--skip_login', action="store_true",
+        help="If specified, skips login on websites specified."
+        )
+    
+    parser.add_argument(
+        "--db-url", default="localhost:3030",
+        help="URL connecting to RDF database. (Defaults to Apache Jena 'localhost:3030')"
+        )
     
     return parser.parse_args(args_list)
 
 def main(args_list:list[str]):
     args = parse_args(args_list)
+    
     res = scrape_urls(args)
+    
     print(json.dumps(res))
     
 if __name__ == "__main__":
