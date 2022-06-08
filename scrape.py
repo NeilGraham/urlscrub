@@ -38,10 +38,8 @@ def scrape_urls(args, driver = None):
     # Iterate over each url specified
     for url in args.url:
         try:
-            print(url)
             # Get base domain URL.
             domain = urlparse(url).netloc
-            print(domain)
             
             # Instantiate domain instance if not already defined.
             if domain not in domain_instances:
