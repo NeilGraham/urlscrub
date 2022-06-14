@@ -1,2 +1,2 @@
 selenium>=4.2.0
-1password>=0.6.1
+onepasswordconnectsdk>=0.6.1

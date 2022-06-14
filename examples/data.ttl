@@ -1,5 +1,5 @@
-@prefix meta: <metadata>.
-@prefix data: <data>.
+@prefix meta: <metadata/>.
+@prefix data: <data/>.
 
 data:BestBuy_PS5 a meta:Product;
     meta:url <https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149>;

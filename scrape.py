@@ -6,23 +6,24 @@ import pickle
 import traceback
 
 from selenium import webdriver
+from onepassword import OnePassword
 
 from domains import join_cookies, get_domain_driver
 
-
 dir_script:str = abspath(join(normpath(dirname(__file__))))
-dir_cookies:str = join(dir_script,"cache","cookies","_.pkl")
+file_cookies:str = join(dir_script,"cache","cookies","_.pkl")
 
 with open(join(dir_script,'config.json'), 'r') as f: config = json.load(f)
 
+driver_types = {
+    'firefox': webdriver.Firefox,
+    'chrome': webdriver.Chrome
+}
+
+onepw = None
 
 
-def scrape_urls(args, driver = None):
-    
-    driver_types = {
-        'firefox': webdriver.Firefox,
-        'chrome': webdriver.Chrome
-    }
+def scrape_urls(args):
     
     response = {'results':[], 'errors':[]}
     
@@ -30,10 +31,13 @@ def scrape_urls(args, driver = None):
 
     domain_instances = {}
 
-    # Read cookies from file at location 'dir_cookies'
-    cookies:list = pickle.load(open(dir_cookies, "rb")) if isfile(dir_cookies)\
-                   else []
-    args.cookies = cookies
+    # Read cookies from file at location 'file_cookies'
+    cookies:list = \
+        None if args.skip_cookies or not isfile(file_cookies) \
+        else pickle.load(open(file_cookies, "rb"))
+        
+    if args.manual_mode:
+        input("\nEntering manual mode. Once complete, press enter...\n")
 
     # Iterate over each url specified
     for url in args.url:
@@ -44,7 +48,11 @@ def scrape_urls(args, driver = None):
             # Instantiate domain instance if not already defined.
             if domain not in domain_instances:
                 # Get credentials from 1Password if specified in 'config.json'.
-                credentials:dict = get_domain_credentials_1pw(domain)
+                credentials:dict = \
+                    None if args.skip_login \
+                    else get_domain_credentials_1pw(domain)
+                    
+                # Instantiate the domain instance.
                 domain_instances[domain] = get_domain_driver(domain, driver, credentials, cookies)
 
             # Scrape specific URL.
@@ -60,8 +68,12 @@ def scrape_urls(args, driver = None):
             print("Unexpected error:", sys.exc_info()[0])
             raise
 
-    # Save cookies to location 'dir_cookies'
-    pickle.dump( join_cookies(driver.get_cookies(), cookies), open(dir_cookies,"wb"))
+    # Save cookies to location 'file_cookies' if 'args.skip_cookies' specified.
+    if not args.skip_cookies:
+        pickle.dump(
+            join_cookies(driver.get_cookies(), cookies or []), 
+            open(file_cookies,"wb")
+            )
 
     # Close web browser after parsing each url.
     driver.quit()
@@ -75,6 +87,13 @@ def scrape_urls(args, driver = None):
 def get_domain_credentials_1pw(domain):
     if domain not in config['credentials'] or config['credentials'][domain] == None:
         return None
+    
+    global onepw
+    
+    if onepw == None:
+        onepw = OnePassword()
+        
+    return onepw.get_item(uuid="Amazon", fields=["username", "password"])
     
     
     

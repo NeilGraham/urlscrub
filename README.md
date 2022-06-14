@@ -1,74 +1,86 @@
-# scrape_internet
+# url_scrape
 
-- Python script for scraping multiple domains at once and passing that information directly to a RDF database.
+- Command-line tool to scrape URLs and save them to JSON or RDF.
 
-## Requirements
+## Getting Started
 
-- Python 3.10
+### Requirements
 
-  ```bash
-  python --version
-  ```
+- Python: [`3.10`](https://www.python.org/downloads/)
+- OS: Windows, Mac, Linux
+- [`geckodriver`](https://github.com/mozilla/geckodriver/releases) or [`chromedriver`](https://chromedriver.chromium.org/downloads)
 
-## Setup
+### Installation Process
 
-- ### 1. Install python3 packages
+1. Install `python3.10` packages:
 
-  ```bash
-  cd ./scrape_internet
-  python -m pip install -r ./requirements.txt
-  ```
-
-- ### 2. Install Firefox; Download `geckodriver` and add to your PATH
-
-  - [Download Firefox](https://www.mozilla.org/en-US/firefox/new/)
-
-    - **Linux**:
-
-      ```bash
-      sudo apt-get install firefox
-      ```
-
-  - Download `geckodriver` and add to your `PATH` variable
-
-    - [Download `geckodriver`](https://github.com/mozilla/geckodriver/releases) for your respective operating system.
-    - Unzip `geckodriver`/`geckodriver.exe` file. Move file into a preferred `PATH` directory.
-    - Append the preferred directory to your `PATH` variable.
-      - **[Windows Guide](https://www.computerhope.com/issues/ch000549.htm)**
-      - **Linux**:
-        - Append to your `.bashrc`/`.zshrc`
-
-          ```bash
-          export PATH="$HOME/geckodriver_dir/:$PATH"
-          ```
-
-  - WSL Setup
-
-    - [Guide to install VcXsrv for running Firefox on WSL2](https://www.youtube.com/watch?v=4SZXbl9KVsw)
-
-- ### 3. Update credentials
-
-  - Edit credential files in folder `./credentials`
-
-  - Ex: `./credentials/amazon.json`
-
-    ```json
-    {
-        "email": "example@gmail.com",
-        "password": "TEAM@blpl7get@wulk"
-    }
+    ```bash
+    cd ./url_scrape
+    python3.10 -m pip install -r ./requirements.txt
     ```
+  
+2. Install `geckodriver`
+   - [Download Firefox](https://www.mozilla.org/en-US/firefox/new/) and install.
+     - Linux (Ubuntu):
 
-## Example
+        ```bash
+        sudo apt-get install firefox
+        ```
 
-- Command
+   - [Download `geckodriver.zip`](https://github.com/mozilla/geckodriver/releases).
+   - Unzip `geckodriver`/`geckodriver.exe` file into a preferred directory.
+   - Append the directory containing `geckodriver` to your `PATH` variable. ([Guide](#guide__append_path))
+
+3. Install `chromedriver`
+   - [Download Google Chrome](https://www.google.com/chrome/) and install.
+   - Find the version of Google Chrome you have installed.
+     - Open Google Chrome web browser.
+     - Click on 3 vertical dots at top right. ([Picture](docs/images/chrome_version__1.png))
+
+        <!-- <img src="docs/images/chrome_version__1.png" alt="drawing" style="height:100px;"/> -->
+
+     - At the bottom of the dropdown, select `Help`, then `About Google Chrome`. ([Picture](docs/images/chrome_version__2.png))
+
+        <!-- <img src="docs/images/chrome_version__2.png" alt="drawing" style="height:130px;"/> -->
+
+     - Remember the version number displayed ([Picture](docs/images/chrome_version__3.png); Ex: `102.0.5005.115`)
+
+        <!-- <img src="docs/images/chrome_version__3.png" alt="drawing" style="height:220px;"/> -->
+
+   - [Download `chromedriver.zip`](https://chromedriver.chromium.org/downloads) with the most corresponding version number.
+     - Not exact version number (Ex: chromedriver `102.0.5005.61` w/ Google Chrome `102.0.5005.115`)
+   - Unzip `chromedriver`/`chromedriver.exe` file into a preferred directory.
+   - Append the directory containing `chromedriver` to your `PATH` variable. ([Guide](#guide__append_path))
+
+### Run the script
+
+- Command:
 
   ```bash
-  python ./run.py --url "https://www.bestbuy.com/site/apple-airtag-silver/6461348.p?skuId=6461348"
+  python3.10 run.py --url "https://www.bestbuy.com/site/apple-airtag-silver/6461348.p?skuId=6461348"
   ```
 
-- Response
+- Response:
 
   ```json
-  [{"type": "product", "productTitle": "Apple - AirTag - Silver", "sitePrice": "$29.00\nYour price for this item is $29.00"}]
+  [
+    {
+      "type": "product",
+      "productTitle": "Apple - AirTag - Silver",
+      "sitePrice": "$29.00\nYour price for this item is $29.00"
+    }
+  ]
   ```
+
+## Guides
+
+- <a id='guide__append_path'></a> Appending directories to your `PATH` environment variable.
+  - **[Windows Guide](https://www.computerhope.com/issues/ch000549.htm)**
+  - **Linux**:
+    - Append path to your `.bashrc`/`.zshrc`
+
+      ```bash
+      export PATH="$HOME/geckodriver_dir/:$PATH"
+      ```
+
+- [Guide to install VcXsrv for running Firefox on WSL2](https://www.youtube.com/watch?v=4SZXbl9KVsw)

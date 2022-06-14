@@ -2,8 +2,6 @@ import sys
 import json
 from argparse import ArgumentParser
 
-# from onepassword import OnePassword
-
 from scrape import scrape_urls
 
 def parse_args(args_list:list[str]):
@@ -20,14 +18,25 @@ def parse_args(args_list:list[str]):
         )
 
     parser.add_argument(
-        '--skip_login', action="store_true",
+        '--skip-login', action="store_true",
         help="If specified, skips login on websites specified."
+        )
+    
+    parser.add_argument(
+        "--skip-cookies", action="store_true",
+        help="If specified, skips adding cookies."
         )
     
     parser.add_argument(
         "--db-url", default="localhost:3030",
         help="URL connecting to RDF database. (Defaults to Apache Jena 'localhost:3030')"
         )
+    
+    parser.add_argument(
+        '--manual-mode', action="store_true",
+        help="If specified, puts user in an environment where they can manually "
+        "enter credentials. Once finished, press enter in the terminal."
+    )
     
     return parser.parse_args(args_list)
 
