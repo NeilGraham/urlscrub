@@ -8,8 +8,13 @@ def parse_args(args_list:list[str]):
     parser = ArgumentParser()
 
     parser.add_argument(
-        "--url", '-l', required=True, nargs='+',
+        "--url", '-l', nargs='+', default=[],
         help="URL to parse information from."
+        )
+    
+    parser.add_argument(
+        "--search", "-s", nargs="+", default=[],
+        help="Search against domain (e.g. 'amazon; Hello world!')."
         )
     
     parser.add_argument(

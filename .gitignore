@@ -1,3 +1,5 @@
+.vscode
+
 # './database'
 database/*
 !database/README.md

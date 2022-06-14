@@ -48,7 +48,7 @@
         <!-- <img src="docs/images/chrome_version__3.png" alt="drawing" style="height:220px;"/> -->
 
    - [Download `chromedriver.zip`](https://chromedriver.chromium.org/downloads) with the most corresponding version number.
-     - Not exact version number (Ex: chromedriver `102.0.5005.61` w/ Google Chrome `102.0.5005.115`)
+     - Exact version number not required (Ex: chromedriver `102.0.5005.61` w/ Google Chrome `102.0.5005.115`)
    - Unzip `chromedriver`/`chromedriver.exe` file into a preferred directory.
    - Append the directory containing `chromedriver` to your `PATH` variable. ([Guide](#guide__append_path))
 
@@ -57,19 +57,23 @@
 - Command:
 
   ```bash
-  python3.10 run.py --url "https://www.bestbuy.com/site/apple-airtag-silver/6461348.p?skuId=6461348"
+  python3.10 run.py --skip-cookies --driver "chrome" -l "https://www.amazon.com/All-new-Kindle-Oasis-now-with-adjustable-warm-light/dp/B07GRSK3HC"
   ```
 
 - Response:
 
   ```json
-  [
-    {
-      "type": "product",
-      "productTitle": "Apple - AirTag - Silver",
-      "sitePrice": "$29.00\nYour price for this item is $29.00"
-    }
-  ]
+  {
+    "results": [
+      {
+        "type": "product",
+        "productTitle": "Kindle Oasis \u2013 With adjustable warm light",
+        "availability": "In Stock.",
+        "rating": "19,734 ratings",
+        "imageURL": "https://m.media-amazon.com/images/I/614TlIaYBvL._AC_SX679_.jpg"
+      }
+    ]
+  }
   ```
 
 ## Guides
@@ -80,7 +84,7 @@
     - Append path to your `.bashrc`/`.zshrc`
 
       ```bash
-      export PATH="$HOME/geckodriver_dir/:$PATH"
+      export PATH="<geckodriver_dir>/:$PATH"
       ```
 
 - [Guide to install VcXsrv for running Firefox on WSL2](https://www.youtube.com/watch?v=4SZXbl9KVsw)

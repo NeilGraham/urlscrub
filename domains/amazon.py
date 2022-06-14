@@ -1,4 +1,5 @@
-from time import sleep
+# from time import sleep
+import urllib.parse
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -91,3 +92,17 @@ class SeleniumAmazon(SeleniumWebsite):
         except NoSuchElementException: pass
         
         return res
+    
+    def search(self, search_string:str, limit:int=10) -> list[dict]:
+        """Searches
+
+        Args:
+            search_string (str): _description_
+            limit (int, optional): _description_. Defaults to 10.
+
+        Returns:
+            list[dict]: _description_
+        """
+        self.driver.get(f"{self.domain_mainpage}/s?k={urllib.parse.quote_plus(search_string)}")
+        
+        return []
