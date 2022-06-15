@@ -11,6 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from domains.SeleniumWebsite import SeleniumWebsite
 
+
 class SeleniumAmazon(SeleniumWebsite):
 
     domain = "www.amazon.com"
@@ -18,20 +19,22 @@ class SeleniumAmazon(SeleniumWebsite):
 
     def login(
         self,
-        email:str,
-        password:str,
-        stay_signed_in:bool=True,
-        url:str='https://www.amazon.com/',
-        ):
+        email: str,
+        password: str,
+        stay_signed_in: bool = True,
+        url: str = "https://www.amazon.com/",
+    ):
         wait = WebDriverWait(self.driver, 5)
         # Go to Amazon's main page if url is not 'None'
-        if url: self.driver.get(url)
+        if url:
+            self.driver.get(url)
 
         # Return if already logged in
         try:
             self.driver.find_element_by_id("nav-item-signout")
             return
-        except: pass
+        except:
+            pass
 
         # Click the 'Sign in' button on Amazon's main page
         wait.until(
@@ -43,57 +46,70 @@ class SeleniumAmazon(SeleniumWebsite):
             self.driver.find_element_by_id("ap_password")
         except:
             # Send the email provided
-            wait.until(
-                EC.presence_of_element_located((By.ID, 'ap_email'))
-            ).send_keys(email)
+            wait.until(EC.presence_of_element_located((By.ID, "ap_email"))).send_keys(
+                email
+            )
             # Continue to password
-            self.driver.find_element_by_id('continue').click()
+            self.driver.find_element_by_id("continue").click()
 
         # Send the password provided
-        wait.until(
-            EC.presence_of_element_located((By.ID,'ap_password'))
-            ).send_keys(password)
+        wait.until(EC.presence_of_element_located((By.ID, "ap_password"))).send_keys(
+            password
+        )
 
         # If 'stay_signed_in' is True, check the box keeping the user signed in
         if stay_signed_in:
-            self.driver.find_element_by_xpath(
-                "//input[@name='rememberMe']"
-            ).click()
+            self.driver.find_element_by_xpath("//input[@name='rememberMe']").click()
 
         # Submit credentials
-        self.driver.find_element_by_id('signInSubmit').click()
-        
-    def scrape_url(self, url:str=None) -> dict:
-        # Go to the URL specified
-        if url: self.driver.get(url)
+        self.driver.find_element_by_id("signInSubmit").click()
 
-        # parse values from 
-        res:dict = {
+    def scrape_url(self, url: str = None) -> dict:
+        # Go to the URL specified
+        if url:
+            self.driver.get(url)
+
+        # parse values from
+        res: dict = {
             "type": "product",
-            "productTitle": self.driver.find_element_by_id('productTitle').text,
+            "productTitle": self.driver.find_element_by_id("productTitle").text,
             "availability": self.driver.find_element_by_xpath(
-                "//div[@id='availability']/span").text,
+                "//div[@id='availability']/span"
+            ).text,
             "rating": self.driver.find_element_by_id("acrCustomerReviewText").text,
             "imageURL": self.driver.find_element_by_xpath(
-                "//img[@id='landingImage']").get_attribute('src'),
+                "//img[@id='landingImage']"
+            ).get_attribute("src"),
         }
-        
+
         # If product is 'Currently unavailable', set specific values and return
-        if res['availability'] == 'Currently unavailable.':
-            res['sitePrice'] = None
-            res['thirdPartyPrices'] = []
+        if res["availability"] == "Currently unavailable.":
+            res["sitePrice"] = None
+            res["thirdPartyPrices"] = []
             return res
-        
-        try: res['sitePrice'] = self.driver.find_element_by_id("priceblock_ourprice").text
-        except NoSuchElementException: pass
-        try: res['sitePrice'] = self.driver.find_element_by_id("priceblock_dealprice").text
-        except NoSuchElementException: pass
-        try: res['sitePrice'] = self.driver.find_element_by_id("priceblock_saleprice").text
-        except NoSuchElementException: pass
-        
+
+        try:
+            res["sitePrice"] = self.driver.find_element_by_id(
+                "priceblock_ourprice"
+            ).text
+        except NoSuchElementException:
+            pass
+        try:
+            res["sitePrice"] = self.driver.find_element_by_id(
+                "priceblock_dealprice"
+            ).text
+        except NoSuchElementException:
+            pass
+        try:
+            res["sitePrice"] = self.driver.find_element_by_id(
+                "priceblock_saleprice"
+            ).text
+        except NoSuchElementException:
+            pass
+
         return res
-    
-    def search(self, search_string:str, limit:int=10) -> list[dict]:
+
+    def search(self, search_string: str, limit: int = 10) -> list[dict]:
         """Searches
 
         Args:
@@ -103,6 +119,8 @@ class SeleniumAmazon(SeleniumWebsite):
         Returns:
             list[dict]: _description_
         """
-        self.driver.get(f"{self.domain_mainpage}/s?k={urllib.parse.quote_plus(search_string)}")
-        
+        self.driver.get(
+            f"{self.domain_mainpage}/s?k={urllib.parse.quote_plus(search_string)}"
+        )
+
         return []

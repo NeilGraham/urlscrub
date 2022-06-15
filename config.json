@@ -4,5 +4,8 @@
         "www.amazon.com": null,
         "www.bestbuy.com": null,
         "www.youtube.com": null
+    },
+    "search-options": {
+        "ignore-advertised": true
     }
 }

@@ -12,10 +12,11 @@ domain_map = {
     "www.airbnb.com": SeleniumAirbnb,
     "www.amazon.com": SeleniumAmazon,
     "www.bestbuy.com": SeleniumBestBuy,
-    "www.youtube.com": SeleniumYouTube
+    "www.youtube.com": SeleniumYouTube,
 }
 
-def join_cookies(cookies_a:list[dict], cookies_b:list[dict]) -> list[dict]:
+
+def join_cookies(cookies_a: list[dict], cookies_b: list[dict]) -> list[dict]:
     """Joins 2 lists of cookies together, duplicate objects are merged together.
 
     Args:
@@ -29,13 +30,14 @@ def join_cookies(cookies_a:list[dict], cookies_b:list[dict]) -> list[dict]:
     for cookie in [*cookies_a, *cookies_b]:
         parsed[json.dumps(cookie, sort_keys=True)] = cookie
     return list(parsed.values())
-            
+
+
 def get_domain_driver(
-    domain:str, 
-    driver:WebDriver=None, 
-    credentials:dict=None, 
-    cookies:list[dict]=None
-    ) -> SeleniumWebsite:
+    domain: str,
+    driver: WebDriver = None,
+    credentials: dict = None,
+    cookies: list[dict] = None,
+) -> SeleniumWebsite:
     """Return a SeleniumWebsite object for the given domain.
 
     Args:

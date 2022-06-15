@@ -48,7 +48,9 @@ def pop_silent(l: list, i: int = -1):
         return None
 
 
-def get_domain_instance(domain:str, driver, cookies:list[dict], args) -> SeleniumWebsite:
+def get_domain_instance(
+    domain: str, driver, cookies: list[dict], args
+) -> SeleniumWebsite:
     """Instantiates domain driver if doesn't exist, otherwise returns
     existing instance.
 
