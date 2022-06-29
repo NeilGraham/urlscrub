@@ -1,0 +1,74 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix meta: <metadata#> .
+@prefix meta_sh: <metadata/shacl#> .
+
+meta_sh:TimeEntry
+    a sh:NodeShape ;
+    sh:targetClass meta:Entry ;
+    meta:subjectURI "data#${objectHash()}" ;
+    sh:property [
+        sh:path meta:value ;
+        meta:variable "value" ;
+        sh:minCount 1 ; # Required; 1 or more
+    ] ;
+    sh:property [
+        sh:path meta:time ;
+        meta:variable "time" ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ; sh:maxCount 1 ; # Required; 1
+    ] ;
+    .
+
+meta_sh:ProductListing
+    a sh:NodeShape ;
+    sh:targetClass meta:ProductListing ;
+    meta:subjectURI "data#${objectHash()}" ;
+    sh:property [
+        sh:path meta:url ;
+        meta:variable "url" ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 1 ; sh:maxCount 1 ; # Required; 1
+    ] ;
+    sh:property [
+        sh:path meta:price ;
+        meta:variable "price" ;
+        sh:datatype xsd:double ;
+        sh:minCount 1 ; sh:maxCount 1 ; # Required; 1
+    ] ;
+    sh:property [
+        sh:path meta:comments ;
+        meta:variable "comments" ;
+        sh:node meta_sh:CommentSet ; 
+        # Optional; 0 or more
+    ] ;
+    .
+
+meta_sh:Price
+    a sh:NodeShape ;
+    sh:targetClass meta:Price ;
+    meta:subjectURI "data#${objectHash()}" ;
+    sh:property [
+        sh:path meta:value ;
+        meta:variable "value" ;
+        sh:datatype xsd:double ;
+        sh:minCount 1 ; sh:maxCount 1 ; # Required; 1
+    ] ;
+    sh:property [
+        sh:path meta:currency ;
+        meta:variable "currency" ;
+        sh:datatype xsd:string ;
+    ] ;
+    .
+
+meta_sh:CommentSet
+    a sh:NodeShape ;
+    sh:targetClass meta:CommentSet ;
+    meta:subjectConstructor "data:${objectHash(?identifier)}" ;
+    sh:property [
+
+    ] ;
+    .
