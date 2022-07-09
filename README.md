@@ -1,22 +1,20 @@
-# url_scrape
+# URL Scrub
 
-- Command-line tool to scrape URLs and save them to JSON or RDF.
+Tool for parsing URL webpage into JSON + RDF.
 
-## Getting Started
+## Setup
 
-### Requirements
+### Dependencies
 
 - Python: [`3.10`](https://www.python.org/downloads/)
-- OS: Windows, Mac, Linux
 - [`geckodriver`](https://github.com/mozilla/geckodriver/releases) or [`chromedriver`](https://chromedriver.chromium.org/downloads)
 
 ### Installation Process
 
-1. Install `python3.10` packages:
+1. Install `urlscrub` with `pip`
 
     ```bash
-    cd ./url_scrape
-    python3.10 -m pip install -r ./requirements.txt
+    python3.10 -m pip install urlscrub
     ```
   
 2. Install `geckodriver`
@@ -52,12 +50,12 @@
    - Unzip `chromedriver`/`chromedriver.exe` file into a preferred directory.
    - Append the directory containing `chromedriver` to your `PATH` variable. ([Guide](#guide__append_path))
 
-### Run the script
+## Command Line Usage
 
 - Command:
 
   ```bash
-  python3.10 run.py --skip-cookies --driver "chrome" -l "https://www.amazon.com/All-new-Kindle-Oasis-now-with-adjustable-warm-light/dp/B07GRSK3HC"
+  urlscrub --skip-cookies --driver "chrome" -l "https://www.amazon.com/All-new-Kindle-Oasis-now-with-adjustable-warm-light/dp/B07GRSK3HC"
   ```
 
 - Response:

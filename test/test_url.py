@@ -1,11 +1,8 @@
-import json, subprocess
-from os.path import join, normpath, dirname
-
-dir_test = normpath(dirname(__file__))
+from test.urls import test_urls
+from package.__main__ import run
 
 
 def test_url():
-    test_urls: list = json.load(open(join(dir_test, "urls.json")))
 
     assert isinstance(test_urls, list)
     assert len(test_urls) > 0
@@ -19,18 +16,7 @@ def test_url():
             url = url_item
         url_list.append(url)
 
-    output = subprocess.run(
-        ["python", "run.py", "--url", *url_list], capture_output=True, text=True
-    )
+    res = run(["--url", *url_list])
 
-    if len(output.stderr) > 0:
-        print(output.stderr)
-        raise ValueError("Encountered error while running script. Error printed above.")
-
-    test_results = json.loads(output.stdout)
-    for result_item in test_results:
+    for result_item in res:
         print(result_item)
-
-
-if __name__ == "__main__":
-    test_url()

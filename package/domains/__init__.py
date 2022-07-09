@@ -2,11 +2,11 @@ import json
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
-from domains.SeleniumWebsite import SeleniumWebsite
-from domains.airbnb import SeleniumAirbnb
-from domains.amazon import SeleniumAmazon
-from domains.bestbuy import SeleniumBestBuy
-from domains.youtube import SeleniumYouTube
+from .SeleniumWebsite import SeleniumWebsite
+from .airbnb import SeleniumAirbnb
+from .amazon import SeleniumAmazon
+from .bestbuy import SeleniumBestBuy
+from .youtube import SeleniumYouTube
 
 domain_map = {
     "www.airbnb.com": SeleniumAirbnb,

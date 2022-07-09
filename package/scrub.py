@@ -8,10 +8,10 @@ import traceback
 from selenium import webdriver
 from onepassword import OnePassword
 
-from domains import join_cookies, get_domain_driver, SeleniumWebsite
+from .domains import join_cookies, get_domain_driver, SeleniumWebsite
 
 dir_script: str = abspath(join(normpath(dirname(__file__))))
-file_cookies: str = join(dir_script, "cache", "cookies", "_.pkl")
+file_cookies: str = join(dir_script, "cookies", "_.pkl")
 
 with open(join(dir_script, "config.json"), "r") as f:
     config = json.load(f)
@@ -82,7 +82,7 @@ def get_domain_instance(
     return domain_instances[domain]
 
 
-def scrape_urls(args):
+def scrub_urls(args):
 
     response = {"results": [], "errors": []}
 

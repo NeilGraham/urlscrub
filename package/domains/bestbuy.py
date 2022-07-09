@@ -8,7 +8,7 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
-from domains.SeleniumWebsite import SeleniumWebsite
+from .SeleniumWebsite import SeleniumWebsite
 
 
 class SeleniumBestBuy(SeleniumWebsite):

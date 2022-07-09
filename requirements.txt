@@ -1,2 +1,0 @@
-selenium>=4.2.0
-onepasswordconnectsdk>=0.6.1

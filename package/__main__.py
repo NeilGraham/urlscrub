@@ -2,7 +2,7 @@ import sys
 import json
 from argparse import ArgumentParser
 
-from scrape import scrape_urls
+from .scrub import scrub_urls
 
 
 def parse_args(args_list: list[str]):
@@ -58,13 +58,16 @@ def parse_args(args_list: list[str]):
     return parser.parse_args(args_list)
 
 
-def main(args_list: list[str]):
+def run(args_list: list[str]=None):
+    if args_list is None:
+        args_list = sys.argv[1:]
+    
     args = parse_args(args_list)
 
-    res = scrape_urls(args)
-
+    res = scrub_urls(args)
+    
     print(json.dumps(res))
-
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
+    
+    return res
+    
+    
