@@ -1,6 +1,6 @@
 # URL Scrub
 
-Tool for parsing URL webpage into JSON + RDF.
+Tool for parsing a URL webpage into JSON + RDF.
 
 ## Setup
 
